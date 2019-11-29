@@ -2,7 +2,7 @@ import { Injectable, Inject } from '@angular/core';
 import {Observable, Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import * as moment from 'moment';
-import { AppConfig } from './Interface/AppConfig';
+import { AppConfig } from '../Interface/AppConfig';
 import { MusicControls } from '@ionic-native/music-controls/ngx';
 @Injectable({
   providedIn: 'root'

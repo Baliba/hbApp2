@@ -18,7 +18,7 @@ import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer/ng
 import { File } from '@ionic-native/file/ngx';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
 import { AdMobFree } from '@ionic-native/admob-free/ngx';
-import { AdMobService } from './ad-mob.service';
+import { AdMobService } from './services/ad-mob.service';
 import { PlaylistService } from './providers/playlist.service';
 import {  NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { AnimationService,AnimatesDirective } from "css-animator";

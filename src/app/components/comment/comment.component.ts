@@ -1,6 +1,6 @@
 
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ElementRef} from '@angular/core';
-import { GetAudioService } from 'src/app/get-audio.service';
+import { GetAudioService } from 'src/app/services/get-audio.service';
 import * as moment from 'moment';
 import { AlertController } from '@ionic/angular';
 @Component({
@@ -12,7 +12,7 @@ import { AlertController } from '@ionic/angular';
   }*/
 })
 export class CommentComponent implements OnInit {
-   @ViewChild('myElm2', {read: ElementRef, static: false}) pElem: ElementRef;
+   @ViewChild('myElm2', {read: ElementRef,   static: false}) pElem: ElementRef;
    @ViewChild('inputbox', {read: ElementRef, static: false}) minput: ElementRef;
    @ViewChild('inputbox', {read: ElementRef, static: true})  input: ElementRef;
   message: any = '';
