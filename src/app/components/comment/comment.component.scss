@@ -1,0 +1,139 @@
+.footer-comment{
+ display: block;
+ text-align: right;
+ margin-right:2%;
+ font-size: 0.8rem;
+ color: red;
+}
+.footer-comment-fav{
+ display: block;
+ text-align: left;
+ margin-left:6%;
+ font-size: 1.1rem;
+ color: red;
+}
+.comment-box {
+    width: 86%;
+    margin-left: 12%;
+    margin-top: 1%;
+    margin-bottom: 3%;
+    padding-bottom: 6%;
+    padding-top: 6%;
+}
+
+.item-line {
+    margin-top: 1%;
+    margin-bottom: 1%;
+    height: 0.5px;
+    width: 100%;
+    background-color: red;
+}
+
+.round {
+    border-radius: 100%;
+    -webkit-box-shadow: 0px 4px 11px -5px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0px 4px 11px -5px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 4px 11px -5px rgba(0, 0, 0, 0.75);
+}
+
+.img-comment {
+    position: relative;
+    top:1%;
+    display:inline-block;
+    float: left;
+    margin-right: 1%;
+    height: 40px;
+    width: 40px;
+}
+.scroll {
+   overflow-y: scroll;
+}
+.block-content {
+    overflow-y: scroll;
+    display: inline-block;
+    max-height: 400px;
+    width: 100%;
+}
+
+.comments {
+    display: block;
+    float: right;
+    width: 98%;
+    margin-left: 1%;
+    margin-bottom: 1%;
+    margin-top: 1%;
+    padding: 1%;
+}
+
+.detail-comment {
+    background-color:#f6f6f6;
+    border-radius:10px;
+    position: relative;
+    display: inline-block;
+    padding: 2%;
+    h4 {
+        text-align: left;
+        color: red;
+        font-weight: bold;
+        font-size: 1rem;
+        margin-left: 2%;
+    }
+    width:83%;
+    float:right;
+    p{
+        text-align: left;
+        margin-left: 2%;
+        font-size: 15px;
+        color: #6c6c6c;
+    }
+
+    label{
+        font-size: 12px;
+    }
+}
+
+.input-box {
+    position: relative;
+    display: inline-block;
+    width: 98%;
+    margin-left: 1%;
+    margin-top: 1%;
+    margin-bottom: 2%;
+    height: 40px;
+    padding: 1.5%;
+    ion-textarea {
+        display: inline-block;
+        border: 1px solid #ff5252;
+        border-radius: 2%;
+        width: 80%;
+        height: 40px;
+        vertical-align: center;
+        text-align:left;
+        float:left;
+        margin-left: 3%;
+        padding: none;
+    }
+    .button-left {
+        float: left;
+    }
+ion-button:active {
+border:none;
+}
+button  {
+        display: inline-block;
+        width: 7%;
+        height: 40px;
+        background-color: transparent !important;
+        color: red;
+        margin-top: 2%;
+        margin-right: 1%;
+        ion-icon{
+           font-size: 2rem;
+           vertical-align: center;
+        }
+     }
+
+    .button-right {
+        float: right;
+    }
+}

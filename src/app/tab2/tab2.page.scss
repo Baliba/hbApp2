@@ -1,0 +1,141 @@
+ion-item {
+   --ion-background-color:#f6f6f6;
+     border-radius:10px;
+}
+
+ .no-internet{
+     text-align: center;
+     width:10%;
+     height:8%;
+     margin-left: 45%;
+     margin-top:20%;
+     color:red;
+     font-size:16px;
+  }
+  .load-music{
+     text-align: center;
+     width:10%;
+     margin-left: 45%;
+     color:red;
+     font-size:16px;
+  }
+
+.no-internet-full{
+     text-align: center;
+     width:80%;
+     height:20%;
+     margin-left: 10%;
+     margin-top:20%;
+     color:red;
+     font-size:20px;
+     font-weight: bold;
+  }
+.welcome-card img {
+    max-height: 35vh;
+    overflow: hidden;
+}
+
+.titre {
+    font-weight: bold;
+    font-size: 1rem;
+    text-transform: uppercase;
+}
+
+#app-section {
+    #app-title {
+        text-transform: uppercase;
+    }
+    ion-icon {
+        font-size: 15rem;
+    }
+}
+.tool_btn{
+  color: red;
+  font-size: 2em;
+  margin-left: 2%;
+  margin-right: 2%;
+}
+.play_btn {
+    color: red;
+}
+
+ion-card {
+    opacity: 0.9;
+    height: 2rem;
+    bottom: 0;
+}
+
+ion-footer {
+  min-height: 200px;
+ .btn-pane-1 {
+  padding: 2%;
+  .line{
+    width:98%;
+    height:1px;
+    margin:1%;
+    color:transparent;
+    background-color: transparent;
+  }
+  .btn-closef{
+     background-color: transparent;
+     float:right;
+     position: relative;
+     top: 2%;
+     right: 2%;
+     ion-icon {
+     color: red;
+     font-size: 2rem;
+     font-weight: bold;
+     }
+
+}
+
+.titref {
+            text-align: center;
+            color: red;
+            font-size: 1.3rem;
+            font-weight: bold;
+     }
+   .stitrel {
+            margin-top:-3%;
+            margin-left: 2%;
+            float:left;
+            display: inline-block;
+            text-align: left;
+            color: red;
+            font-size: 1rem;
+    }
+    .stitrer {
+            margin-top:-3%;
+            margin-right:2%;
+            float:right;
+            display: inline-block;
+            text-align: right;
+            color: red;
+            font-size: 1rem;
+    }
+}
+  .btn-pane {
+    height: 50px;
+
+    ion-grid {
+        height: 100%;
+    }
+    ion-row {
+        height: 40%;
+    }
+    ion-col {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        button {
+            background-color: transparent;
+            ion-icon {
+                color: red;
+                font-size: 2rem;
+            }
+        }
+    }
+  }
+}

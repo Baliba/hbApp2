@@ -1,0 +1,181 @@
+<ion-header>
+    <ion-toolbar color="danger" *ngIf="!bsearch">
+
+        <ion-title *ngIf="!menu">
+            HitBoard
+        </ion-title>
+        <ion-title *ngIf="menu">
+            Settings
+        </ion-title>
+        <ion-buttons slot="primary">
+            <ion-button (click)="toggleSearch()" *ngIf="!menu">
+                <ion-icon slot="icon-only" name="search"></ion-icon>
+            </ion-button>
+            <ion-button (click)="toggleMenu()">
+                <ion-icon slot="icon-only" *ngIf="!menu" name="cog"></ion-icon>
+                <ion-icon slot="icon-only" *ngIf="menu" name="close"></ion-icon>
+            </ion-button>
+
+        </ion-buttons>
+    </ion-toolbar>
+    <ion-toolbar color="danger" *ngIf="bsearch">
+        <ion-buttons slot="primary">
+            <ion-button (click)="toggleSearch()">
+                <ion-icon slot="icon-only" name="close"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-searchbar
+        (keyup)="keySeachUp($event)"
+        (keydown)="keySeachDown($event)"
+        [(ngModel)]="query" type="search"
+         placeholder="search for music"
+         debounce="500" animated>
+     </ion-searchbar>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="menu" padding>
+
+    <div class="panel_profil" *ngIf="loggedIn">
+        <!-- <ion-avatar class="center">
+<img img-loader  src="{{users.user_img  || defaultImage }}">
+</ion-avatar> -->
+        <ion-avatar class="center">
+            <img-loader class="round" src="{{users.user_img  || defaultImage}}"></img-loader>
+        </ion-avatar>
+        <h2 class="titre">{{users.nom_complet}}</h2>
+        <h3 class="stitre"> ({{users.email}})</h3>
+        <hr class="linep" />
+    </div>
+
+    <ion-list>
+        <ion-list-header>
+            <ion-label>Please configure your settings</ion-label>
+        </ion-list-header>
+        <ion-item *ngIf="!loggedIn" (click)="login()">
+            <ion-label>Login with Facebook</ion-label>
+            <ion-icon color="danger" item-end name="logo-facebook"></ion-icon>
+        </ion-item>
+        <ion-item *ngIf="loggedIn" (click)="logout()">
+            <ion-label>Logout Facebook</ion-label>
+            <ion-icon color="danger" item-end name="logo-facebook"></ion-icon>
+        </ion-item>
+        <ion-item>
+            <ion-label>Play next music automaticaly</ion-label>
+            <ion-checkbox [(ngModel)]="settings.automatic" (ionChange)="updateMenu()" color="danger"></ion-checkbox>
+        </ion-item>
+        <ion-item>
+            <ion-label>Play next music randomly</ion-label>
+            <ion-checkbox [(ngModel)]="settings.randomly" (ionChange)="updateMenu()" color="danger"></ion-checkbox>
+        </ion-item>
+        <ion-item>
+            <ion-label>Show music image</ion-label>
+            <ion-checkbox [(ngModel)]="settings.showImage" (ionChange)="updateMenu()" color="danger"></ion-checkbox>
+        </ion-item>
+        <ion-item>
+            <ion-label>Show download and listening report</ion-label>
+            <ion-checkbox [(ngModel)]="settings.statistic" (ionChange)="updateMenu()" color="danger"></ion-checkbox>
+        </ion-item>
+        <ion-item>
+            <ion-label>Autoplay music in playlist</ion-label>
+            <ion-checkbox [(ngModel)]="settings.autoplay" (ionChange)="updateMenu()" color="danger"></ion-checkbox>
+        </ion-item>
+        <ion-item>
+            <ion-label>Always show player on play</ion-label>
+            <ion-checkbox [(ngModel)]="settings.player" (ionChange)="updateMenu()" color="danger"></ion-checkbox>
+        </ion-item>
+        <ion-item (click)="toggleLCat()" *ngIf="cats.length">
+            <ion-label>
+                Select category to exclude
+            </ion-label>
+            <ion-icon *ngIf="!showCat" class="play_btn" item-end name="arrow-down"></ion-icon>
+            <ion-icon *ngIf="showCat" class="play_btn" item-end name="arrow-up"></ion-icon>
+        </ion-item>
+        <div *ngIf="showCat">
+            <ion-item *ngFor="let entry of  cats">
+                <ion-label>{{ UTF8toStr(entry.nom) }}</ion-label>
+                <ion-checkbox slot="end" color="danger" [checked]="isReject(entry)" (ionChange)="removeCats($event,entry)"></ion-checkbox>
+            </ion-item>
+        </div>
+    </ion-list>
+</ion-content>
+
+<ion-content padding *ngIf="!files.length && !menu">
+    <p class="no-internet" *ngIf="!tlong">
+        <ion-spinner></ion-spinner>
+    </p>
+    <p class="no-internet-full" *ngIf="tlong">
+        {{msgUnload}}
+        <button block color="danger" ion-button *ngIf="!bsearch" (click)="checkAgain()">Try Again</button>
+    </p>
+</ion-content>
+<ion-content  *ngIf="files.length && !menu" padding>
+    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+   <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more music...">
+    <ion-list line="no-lines" no-lines lines="none">
+        <ion-item *ngIf="isDL">
+            <ion-label class="ion-text-wrap">
+                <ion-text color="danger">
+                    <h3>{{ currentDL.nom }} is downloading</h3>
+                    <ion-progress-bar type="indeterminate"></ion-progress-bar>
+                </ion-text>
+            </ion-label>
+            <ion-icon class="play_btn" item-end name="close" (click)="cancelDL()"></ion-icon>
+        </ion-item>
+        <ng-container *ngFor="let file of files; let i = index" >
+            <div class="block-music">
+            <ion-item-sliding *ngIf="file.type_pub==1">
+                <ion-item [@fadeInOut] text-wrap no-lines lines="no-lines">
+                    <ion-thumbnail  slot="start" *ngIf="settings.showImage" style="height:7rem; width:7rem; border-radius:0.1rem;padding:auto;">
+                        <img-loader style="height:7rem; width:7rem; border-radius:0.1rem;" src="{{getAvatar(file.avatar_ent,file,i) || defaultImage}}">
+                        </img-loader>
+                    </ion-thumbnail>
+                    <ion-label class="ion-text-wrap">
+                        <ion-text color="danger">
+                            <h3 class="titre">{{ file.nom }}</h3>
+                        </ion-text>
+                        <p>@{{file.nom_ent}}</p>
+                        <ion-text color="secondary">
+                            <p item-left>{{file.categorie}}-{{type_ent[file.type_entite]}}</p>
+                        </ion-text>
+                        <ion-text color="success" *ngIf="islistening(file)">
+                            <p> listening </p>
+                        </ion-text>
+                        <p *ngIf="settings.statistic">
+                            <ion-icon  *ngIf="file.get_access>10" class="chip color-pink" name="flame"></ion-icon>
+                            <ion-text color="danger">
+                                {{ getListen(file.get_access) }}
+                            </ion-text>
+                            -
+                            <ion-text color="danger">
+                                {{ getDL(file.download) }}
+                            </ion-text>
+                        </p>
+                    </ion-label>
+
+                    <ion-icon class="play_btn" item-end name="pause" *ngIf="islistening(file)" (click)="pause()">
+                    </ion-icon>
+                    <ion-icon class="play_btn" item-end name="play" *ngIf=" (state.info.id_pub==file.id_pub && !state.info.playing ) || state.info.id_pub!=file.id_pub || (state.info.id_pub!=file.id_pub && !state.info.playing)" (click)="openFile(file, i)"></ion-icon>
+                </ion-item>
+                <ion-item-options side="end">
+                    <ion-item-option color="danger" *ngIf="currentDL.index!=i" (click)="download(file,i)">
+                        <ion-icon slot="icon-only" class="tool_btn" name="download"></ion-icon>
+                    </ion-item-option>
+                    <ion-item-option color="danger" *ngIf="check(file)" (click)="addToPlaylist(file)">
+                        <ion-icon slot="icon-only" class="tool_btn" name="star"></ion-icon>
+                    </ion-item-option>
+                </ion-item-options>
+            </ion-item-sliding>
+            <app-comment [comments]="file.commenthb"  (emitLogin)="login()" (emitAnimate)="emitAnimate($event)" [ncom]="file.commenthb.all_page" [id_pub]="file.id_pub" [users]="users" [isLogin]="loggedIn" (emitNotLogin)="emitNotLogin($event)"></app-comment>
+            <div class="item-line"></div>
+            </div>
+        </ng-container>
+    </ion-list>
+
+    </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+</ion-content>
+<app-player *ngIf="currentFile && state.media && state.info && state.info.id_pub!=null" [currentFile]="currentFile" [state]="state" [player]="player"
+  (emitTogglePlayer)="togglePlayer($event)" (emitStop)="stop()" (emitPlay)="play()" (emitOnSeekStart)="onSeekStart()"
+    (emitOnSeekEnd)="onSeekEnd($event)" (emitPrevious)="previous()" (emitNext)="next()" [seekbar]="seekbar"
+    (emitPause)="pause()"></app-player>

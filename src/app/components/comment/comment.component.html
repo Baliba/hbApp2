@@ -1,0 +1,59 @@
+<div class="comment-box" #myElm>
+    <div class="block-content" *ngIf="comments.Commenthb[0] && !allComment ">
+        <div class="item-line" ></div>
+        <div class="comments">
+            <ion-avatar class="img-comment">
+                <img-loader class="round" src="{{comments.Commenthb[0].user_img  || defaultImage}}"></img-loader>
+            </ion-avatar>
+            <div class="detail-comment">
+                <h4>{{comments.Commenthb[0].nom_complet || 'Unknow user' }}</h4>
+                <p class="message">{{comments.Commenthb[0].text}}</p>
+                <label style="float:left;margin-left:2%;">{{ formatTime(comments.Commenthb[0].date)}}</label>
+            </div>
+        </div>
+        <div class="footer-comment" (click)="allComment=!allComment;" *ngIf="comments.Commenthb.length>1 && !allComment ">{{setFormat(ncom)}} comments, see more</div>
+    </div>
+    <div class="scroll" #myElm2>
+        <div class="footer-comment" (click)="allComment=!allComment"  *ngIf="allComment">close</div>
+        <div class="block-content" *ngIf="allComment">
+            <div class="item-line"></div>
+            <div *ngFor="let comment of comments.Commenthb" class="comments">
+                <ion-avatar class="img-comment">
+                    <img-loader class="round" src="{{comment.user_img  || defaultImage}}"></img-loader>
+                </ion-avatar>
+
+                <div class="detail-comment">
+                    <h4>{{comment.nom_complet || 'Unknow user' }}</h4>
+                    <p>{{comment.text}}</p>
+                    <label>{{formatTime(comment.date)}}</label>
+                </div>
+            </div>
+            <div class="footer-comment" *ngIf="comments.next_page && mComment" (click)="loadComment()">
+                <ion-icon item-left name="comment"></ion-icon> see more comments
+            </div>
+        </div>
+    </div>
+
+    <div class="input-box">
+        <div class="footer-comment-fav" *ngIf="!aComment" (click)="aComment=!aComment; animInputIn(); ">
+            <ion-icon item-left name="chat"></ion-icon> add comment...
+        </div>
+        <div class="footer-comment-fav" *ngIf="aComment" (click)="animInputOut();">
+            <ion-icon item-left name="chat"></ion-icon> cancel comment
+        </div>
+        <div #inputbox>
+            <div *ngIf="aComment">
+                <!-- <button float-left ion-button small clear icon-only (click)="toggled = !toggled"
+                 [(emojiPickerIf)]="toggled" [emojiPickerDirection]="'down'" (emojiPickerSelect)="handleSelection($event)" class="button-left">
+               <ion-icon name="md-happy"></ion-icon>
+                </button> -->
+                 <ion-spinner *ngIf="isSend" style="vertical-align:center;float:left;margin-top:2%;width:1.2rem;height:1.2rem;"></ion-spinner>
+                 <ion-textarea [(ngModel)]="message" type="text" placeholder="Comment ...." st></ion-textarea>
+
+                <button *ngIf="message" ion-button small float-right clear (click)="setComment()" class="button-left">
+                <ion-icon   name="send"></ion-icon>
+        </button>
+            </div>
+        </div>
+    </div>
+</div>

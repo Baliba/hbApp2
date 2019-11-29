@@ -1,0 +1,55 @@
+<ion-header>
+    <ion-toolbar color="danger" *ngIf="!bsearch">
+        <ion-title>
+            News
+        </ion-title>
+     <ion-buttons slot="primary">
+    <ion-button (click)="toggleSearch()">
+      <ion-icon slot="icon-only" name="search"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+    </ion-toolbar>
+    <ion-toolbar color="danger" *ngIf="bsearch">
+  <ion-buttons slot="primary">
+    <ion-button (click)="toggleSearch()">
+      <ion-icon slot="icon-only" name="close"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+ <ion-searchbar
+    (ionChange)="keySeachUp($event)"
+    (keydown)="keySeachDown($event)"
+    [(ngModel)]="query"
+    type="search"
+    placeholder="Search for news"
+    debounce="500"
+    animated></ion-searchbar>
+</ion-toolbar>
+</ion-header>
+
+<ion-content padding *ngIf="!files.length">
+     <p class="no-internet"  *ngIf="!tlong">
+        <ion-spinner></ion-spinner>
+    </p>
+    <p class="no-internet-full"  *ngIf="tlong">
+         {{msgUnload}}
+        <button block color="danger" ion-button *ngIf="!bsearch" (click)="checkAgain()">Try Again</button>
+    </p>
+</ion-content>
+<ion-content  *ngIf="files.length" padding>
+<ng-container *ngFor="let file of files; let i = index">
+  <ion-card>
+  	<img img-loader   style="height:400px" src="{{getImg(file.link_pub) || defaultImage}}" >
+<ion-card-header>
+<ion-card-title class="titre">{{ UTF8toStr(file.nom) }}</ion-card-title>
+<ion-card-subtitle>publish {{getDate(file.date_pub)}}</ion-card-subtitle>
+</ion-card-header>
+<ion-card-content>
+{{ UTF8toStr(file.label) }}
+</ion-card-content>
+</ion-card>
+ <app-comment [comments]="file.commenthb" (emitAnimate)="emitAnimate($event)" [ncom]="file.commenthb.all_page" [id_pub]="file.id_pub" [users]="users" [isLogin]="loggedIn" (emitNotLogin)="emitNotLogin($event)"></app-comment>
+</ng-container>
+	 <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+</ion-content>

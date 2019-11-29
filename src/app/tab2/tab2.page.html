@@ -1,0 +1,74 @@
+<ion-header>
+    <ion-toolbar color="danger" *ngIf="!bsearch">
+        <ion-title>
+            Playlist
+        </ion-title>
+        <ion-buttons slot="primary">
+            <ion-button (click)="toggleSearch()">
+                <ion-icon slot="icon-only" name="search"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+    <ion-toolbar color="danger" *ngIf="bsearch">
+        <ion-buttons slot="primary">
+            <ion-button (click)="toggleSearch()">
+                <ion-icon slot="icon-only" name="close"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-searchbar (ionChange)="keySeachUp($event)" [(ngModel)]="query" type="search" placeholder="search for music" debounce="500" animated></ion-searchbar>
+    </ion-toolbar>
+</ion-header>
+<ion-content padding *ngIf="!files.length">
+    <p class="no-internet" *ngIf="!tlong">
+        <ion-spinner></ion-spinner>
+    </p>
+    <p class="no-internet-full" *ngIf="tlong">
+        {{msgUnload}}
+    </p>
+</ion-content>
+<ion-content *ngIf="files.length " padding>
+    <ion-list line="no-lines">
+        <ng-container *ngFor="let file of files; let i = index">
+            <ion-item-sliding>
+                <ion-item [@fadeInOut] text-wrap no-lines>
+                    <ion-thumbnail slot="start" *ngIf="settings.showImage">
+                        <img-loader src="{{getAvatar(file.avatar_ent,file,i) || defaultImage}}">
+                        </img-loader>
+                    </ion-thumbnail>
+                    <ion-label class="ion-text-wrap">
+                        <ion-text color="danger">
+                            <h3 class="titre">{{ file.nom }}</h3>
+                        </ion-text>
+                        <p>@{{file.nom_ent}}</p>
+                        <ion-text color="secondary">
+                            <p item-left>{{file.categorie}}</p>
+                        </ion-text>
+                        <ion-text color="success" *ngIf="islistening(file)">
+                            <p> listening </p>
+                        </ion-text>
+                    </ion-label>
+                    <ion-icon class="play_btn" item-end name="pause" *ngIf=" islistening(file)" (click)="pause()">
+                    </ion-icon>
+                    <ion-icon class="play_btn" item-end name="play" *ngIf="(state.info.id_pub==file.id_pub && !state.info.playing ) || state.info.id_pub!=file.id_pub || (state.info.id_pub!=file.id_pub && !state.info.playing)" (click)="openFile(file, i)"></ion-icon>
+                </ion-item>
+                <ion-item-options side="end">
+                    <ion-item-option color="danger" (click)="removeFromPlaylist(file)" expandable>
+                        Delete
+                    </ion-item-option>
+                </ion-item-options>
+            </ion-item-sliding>
+        </ng-container>
+        <p class="no-internet" *ngIf="loader">
+            <ion-spinner></ion-spinner>
+        </p>
+    </ion-list>
+
+
+</ion-content>
+
+<app-player  *ngIf="currentFile && state.media && state.info && state.info.id_pub!=null"
+   [currentFile]="currentFile" [state]="state" [player]="player"
+  (emitTogglePlayer)="togglePlayer($event)"  (emitStop)="stop()" (emitPlay)="play()"
+  (emitOnSeekStart)="onSeekStart()" (emitOnSeekEnd)="onSeekEnd($event)"
+  (emitPrevious)="previous()"  (emitNext)="next()" [seekbar]="seekbar" (emitPause)="pause"
+  ></app-player>

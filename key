@@ -1,0 +1,25 @@
+1)  keytool -genkey -v -keystore hb.keystore -alias hitboard -keyalg RSA -keysize 2048 -validity 10000
+2)  jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore hb.keystore android-release-unsigned.apk alias_name
+
+ 2-1)jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore ./hb.keystore app.apk hitboard
+
+ionic cordova build android --prod --release  --keystore=./platforms/hb.keystore --alias=hitboard
+
+
+//----------------------------------------------------------------------------
+jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore hb.keystore app-release-unsigned.apk hitboard
+
+zipalign -v 4 app-release-unsigned.apk hitboard_v2.apk
+
+<fr-FR>
+  -Maintenant vous pouvez vous connecter avec votre compte facebook
+  -Faire des commentaires
+  -Partager les musiques sur WhatsApp
+  -Nous avons ajouté maintenant le  contrôleur de musique
+</fr-FR>
+<en-EN>
+  -Now you can Login with your facebook account
+  -You can comment a music
+ -Share a music on WhatsApp
+ -Now we have added the music controller
+</en-EN>
